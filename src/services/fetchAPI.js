@@ -1,10 +1,10 @@
-const URL = 'https://swapi-trybe.herokuapp.com/api/planets/';
+const URL = 'https://star-api-wars.herokuapp.com/';
 
 const fetchAPI = async () => {
   try {
     const response = await fetch(URL);
     const data = await response.json();
-    return data;
+    return data.results;
   } catch (error) {
     console.error(error.message);
   }
