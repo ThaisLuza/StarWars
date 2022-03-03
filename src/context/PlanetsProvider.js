@@ -8,18 +8,25 @@ function PlanetsProvider({ children }) {
 
   const [filterName, setFilterName] = useState({ name: '' }); // filtrar por nome
 
+  const [filterByNumericValues, setFilterByNumericValues] = useState([]); // filtrar por numeros
+
+  // const [options, setOptions] = useState([
+  //   'population',
+  //   'orbital_period',
+  //   'diameter',
+  //   'rotation_period',
+  //   'surface_water',
+  // ]);
+
   const [filtered, setFiltered] = useState(null); // lista os filtrados
 
-  useEffect(() => {
-    const filter = data.filter((planet) => (
-      planet.name.toUpperCase().includes(filterName.name.toUpperCase())
-    ));
-    setFiltered(filter);
-  }, [data, filterName]);
+  const [filterPlanets, setFilterPlanets] = useState([]);
 
   const fetchPlanets = async () => {
     const response = await fetchAPI();
     setData(response);
+    setFilterPlanets(response);
+    console.log(filterPlanets)
   };
 
   useEffect(() => {
@@ -30,10 +37,40 @@ function PlanetsProvider({ children }) {
     fetchPlanets();
   }, []);
 
-  const value = { filtered, filterName, setFilterName };
+  useEffect(() => {
+    const filter = data
+      .filter((planet) => planet.name.toUpperCase()
+        .includes(filterName.name.toUpperCase()));
+    setFiltered(filter);
+  }, [data, filterName]);
+
+  useEffect(() => {
+    const { column, value, comparison } = filterByNumericValues;
+    const filter = filterPlanets.filter((planet) => {
+      switch (comparison) {
+      case 'maior que':
+        return parseInt(planet[column], 10) > value;
+      case 'menor que':
+        return parseInt(planet[column], 10) < value;
+      default:
+        return planet[column] === value;
+      }
+    });
+    setFiltered(filter);
+    console.log(filter)
+    // setOptions(options.filter((option) => option !== column));
+  }, [filterByNumericValues]);
+
+  const valores = {
+    filtered,
+    filterName,
+    setFilterName,
+    setFilterByNumericValues,
+    setFilterPlanets,
+  };
 
   return (
-    <PlanetsContext.Provider value={ value }>
+    <PlanetsContext.Provider value={ valores }>
       {children}
     </PlanetsContext.Provider>
   );

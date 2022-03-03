@@ -3,7 +3,6 @@ import PlanetsContext from '../context/PlanetsContext';
 
 function Table() {
   const { filtered } = useContext(PlanetsContext);
-  console.log(filtered);
   return (
     <table>
       <thead>
