@@ -10,14 +10,6 @@ function PlanetsProvider({ children }) {
 
   const [filterByNumericValues, setFilterByNumericValues] = useState([]); // filtrar por numeros
 
-  // const [options, setOptions] = useState([
-  //   'population',
-  //   'orbital_period',
-  //   'diameter',
-  //   'rotation_period',
-  //   'surface_water',
-  // ]);
-
   const [filtered, setFiltered] = useState(null); // lista os filtrados
 
   const [filterPlanets, setFilterPlanets] = useState([]);
@@ -26,7 +18,6 @@ function PlanetsProvider({ children }) {
     const response = await fetchAPI();
     setData(response);
     setFilterPlanets(response);
-    console.log(filterPlanets)
   };
 
   useEffect(() => {
@@ -57,8 +48,6 @@ function PlanetsProvider({ children }) {
       }
     });
     setFiltered(filter);
-    console.log(filter)
-    // setOptions(options.filter((option) => option !== column));
   }, [filterByNumericValues]);
 
   const valores = {
