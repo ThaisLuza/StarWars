@@ -8,21 +8,21 @@ function PlanetsProvider({ children }) {
 
   const [filterName, setFilterName] = useState({ name: '' }); // filtrar por nome
 
+  const [filtered, setFiltered] = useState([]); // lista os filtrados
+
   const [filterByNumericValues, setFilterByNumericValues] = useState([]); // filtrar por numeros
 
-  const [filtered, setFiltered] = useState(null); // lista os filtrados
-
-  const [filterPlanets, setFilterPlanets] = useState([]);
+  // const [filterPlanets, setFilterPlanets] = useState([]); //
 
   const fetchPlanets = async () => {
     const response = await fetchAPI();
     setData(response);
-    setFilterPlanets(response);
+    setFiltered(response);
   };
 
-  useEffect(() => {
-    setFiltered(data);
-  }, [data]);
+  // useEffect(() => {
+  //   setFiltered(data);
+  // }, [data]);
 
   useEffect(() => {
     fetchPlanets();
@@ -37,7 +37,7 @@ function PlanetsProvider({ children }) {
 
   useEffect(() => {
     const { column, value, comparison } = filterByNumericValues;
-    const filter = filterPlanets.filter((planet) => {
+    const filter = filtered.filter((planet) => {
       switch (comparison) {
       case 'maior que':
         return parseInt(planet[column], 10) > value;
@@ -51,11 +51,12 @@ function PlanetsProvider({ children }) {
   }, [filterByNumericValues]);
 
   const valores = {
+    data,
+    setData,
     filtered,
     filterName,
     setFilterName,
     setFilterByNumericValues,
-    setFilterPlanets,
   };
 
   return (
