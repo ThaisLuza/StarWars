@@ -12,17 +12,17 @@ function PlanetsProvider({ children }) {
 
   const [filterByNumericValues, setFilterByNumericValues] = useState([]); // filtrar por numeros
 
-  // const [filterPlanets, setFilterPlanets] = useState([]); //
+  const [options, setOptions] = useState(['population',
+    'orbital_period',
+    'diameter',
+    'rotation_period',
+    'surface_water']);
 
   const fetchPlanets = async () => {
     const response = await fetchAPI();
     setData(response);
     setFiltered(response);
   };
-
-  // useEffect(() => {
-  //   setFiltered(data);
-  // }, [data]);
 
   useEffect(() => {
     fetchPlanets();
@@ -34,6 +34,8 @@ function PlanetsProvider({ children }) {
         .includes(filterName.name.toUpperCase()));
     setFiltered(filter);
   }, [data, filterName]);
+
+  // o trecho de código a seguir foi baseado no código do colega Rafael Bonin (https://github.com/tryber/sd-017-project-starwars-planets-search/pull/83/files#)
 
   useEffect(() => {
     const { column, value, comparison } = filterByNumericValues;
@@ -48,10 +50,12 @@ function PlanetsProvider({ children }) {
       }
     });
     setFiltered(filter);
+    setOptions(options.filter((item) => item !== column));
   }, [filterByNumericValues]);
 
   const valores = {
     data,
+    options,
     setData,
     filtered,
     filterName,

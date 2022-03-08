@@ -4,7 +4,7 @@ import PlanetsContext from '../context/PlanetsContext';
 function FormFilter() {
   const { filterName,
     setFilterName,
-    setFilterByNumericValues } = useContext(PlanetsContext);
+    setFilterByNumericValues, options } = useContext(PlanetsContext);
   const [column, setColumn] = useState('population');
   const [comparison, setComparison] = useState('maior que');
   const [value, setValue] = useState(0);
@@ -25,11 +25,9 @@ function FormFilter() {
           data-testid="column-filter"
           onChange={ ({ target }) => setColumn(target.value) }
         >
-          <option value="population">population</option>
-          <option value="orbital_period">orbital_period</option>
-          <option value="diameter">diameter</option>
-          <option value="rotation_period">rotation_period</option>
-          <option value="surface_water">surface_water</option>
+          {options.map((selec, key) => (
+            <option key={ key } value={ selec }>{selec}</option>
+          ))}
         </select>
       </label>
       <label htmlFor="comparison-filter">
